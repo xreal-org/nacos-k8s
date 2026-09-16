@@ -92,14 +92,20 @@
                 "name": { "type": "string" },
                 "port": { "type": "integer" },
                 "username": { "type": "string" },
-                "password": { "type": "string" },
-                "existingSecret": {
-                  "type": "string",
-                  "description": "K8s Secret holding the MySQL password; when set, mysql.password is not rendered into nacos-cm and the password is injected from the Secret"
-                },
-                "passwordSecretKey": {
-                  "type": "string",
-                  "description": "Key inside existingSecret that holds the MySQL password (default: password)"
+                "password": {
+                  "type": ["string", "object"],
+                  "description": "Plain text password (legacy), or an object referencing a K8s Secret",
+                  "properties": {
+                    "existingSecret": {
+                      "type": "string",
+                      "description": "K8s Secret holding the MySQL password; when set, mysql.password is not rendered into nacos-cm and the password is injected from the Secret"
+                    },
+                    "key": {
+                      "type": "string",
+                      "description": "Key inside existingSecret that holds the MySQL password (default: password)"
+                    }
+                  },
+                  "required": ["existingSecret"]
                 },
                 "param": { "type": "string" }
               }
