@@ -11,6 +11,8 @@ data:
     nacos.console.port=${NACOS_CONSOLE_PORT:8080}
     nacos.server.contextPath=${SERVER_SERVLET_CONTEXTPATH:/nacos}
     nacos.security.ignore.urls=${NACOS_SECURITY_IGNORE_URLS:/,/error,/**/*.css,/**/*.js,/**/*.html,/**/*.map,/**/*.svg,/**/*.png,/**/*.ico,/console-fe/public/**,/v1/auth/**,/v1/console/health/**,/actuator/**,/v1/console/server/**}
+    #--------------- 反向代理（Istio / nginx）：信任 X-Forwarded-*，使 OIDC 回调正确使用 https ---------------#
+    server.forward-headers-strategy=framework
     {{- if eq .Values.nacos.storage.type "mysql" }}
     #--------------- 外置 MySQL ---------------#
     spring.sql.init.platform=${SPRING_DATASOURCE_PLATFORM:mysql}
