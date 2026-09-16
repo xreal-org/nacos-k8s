@@ -1,0 +1,38 @@
+{{- if .Values.nacos.oidc.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nacos-oidc-config
+  namespace: {{ .Release.Namespace }}
+data:
+  application.properties: |
+    #--------------- Nacos 基础配置（占位符由容器环境变量解析） ---------------#
+    nacos.server.main.port=${NACOS_APPLICATION_PORT:8848}
+    nacos.console.port=${NACOS_CONSOLE_PORT:8080}
+    nacos.server.contextPath=${SERVER_SERVLET_CONTEXTPATH:/nacos}
+    nacos.security.ignore.urls=${NACOS_SECURITY_IGNORE_URLS:/,/error,/**/*.css,/**/*.js,/**/*.html,/**/*.map,/**/*.svg,/**/*.png,/**/*.ico,/console-fe/public/**,/v1/auth/**,/v1/console/health/**,/actuator/**,/v1/console/server/**}
+    {{- if eq .Values.nacos.storage.type "mysql" }}
+    #--------------- 外置 MySQL ---------------#
+    spring.sql.init.platform=${SPRING_DATASOURCE_PLATFORM:mysql}
+    db.num=${MYSQL_DATABASE_NUM:1}
+    db.url.0=jdbc:mysql://${MYSQL_SERVICE_HOST}:${MYSQL_SERVICE_PORT:3306}/${MYSQL_SERVICE_DB_NAME}?${MYSQL_SERVICE_DB_PARAM:characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useSSL=false}
+    db.user.0=${MYSQL_SERVICE_USER}
+    db.password.0=${MYSQL_SERVICE_PASSWORD}
+    {{- end }}
+    #--------------- 基础鉴权（必须保留，来自 nacos-auth Secret 注入的 env） ---------------#
+    nacos.core.auth.enabled=true
+    nacos.core.auth.admin.enabled=true
+    nacos.core.auth.console.enabled=true
+    nacos.core.auth.server.identity.key=${NACOS_AUTH_IDENTITY_KEY}
+    nacos.core.auth.server.identity.value=${NACOS_AUTH_IDENTITY_VALUE}
+    nacos.core.auth.plugin.nacos.token.secret.key=${NACOS_AUTH_TOKEN}
+    #--------------- OIDC（由 values 渲染） ---------------#
+    nacos.core.auth.system.type=oidc
+    nacos.core.auth.plugin.oidc.issuer-uri={{ .Values.nacos.oidc.issuerUri }}
+    nacos.core.auth.plugin.oidc.client-id={{ .Values.nacos.oidc.clientId }}
+    nacos.core.auth.plugin.oidc.client-secret=${NACOS_OIDC_CLIENT_SECRET}
+    nacos.core.auth.plugin.oidc.scope={{ .Values.nacos.oidc.scope | default "openid profile email" }}
+    nacos.core.auth.plugin.oidc.username-claim={{ .Values.nacos.oidc.usernameClaim | default "preferred_username" }}
+    nacos.core.auth.plugin.oidc.roles-claim={{ .Values.nacos.oidc.rolesClaim | default "roles" }}
+    nacos.core.auth.plugin.oidc.admin-role={{ .Values.nacos.oidc.adminRole | default "nacos-admin" }}
+{{- end }}

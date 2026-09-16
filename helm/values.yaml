@@ -41,6 +41,21 @@ nacos:
     tokenSecretKey: token
     identityKeySecretKey: identity-key
     identityValueSecretKey: identity-value
+  oidc:
+    # Enable OIDC/OAuth2 authentication for the Nacos console (requires Nacos >= 3.2.0).
+    # When enabled, the chart renders an application.properties override
+    # (server identity / token placeholders resolved from the env vars below)
+    # and mounts it to /home/nacos/conf/application.properties.
+    enabled: false
+    issuerUri: ""
+    clientId: ""
+    clientSecret:
+      existingSecret: ""
+      key: oidc-client-secret
+    scope: "openid profile email"
+    usernameClaim: preferred_username
+    rolesClaim: roles
+    adminRole: nacos-admin
   # Deprecated inline credential values. Prefer nacos.auth.existingSecret.
   # authToken must be a Base64-encoded value whose decoded form is at least 32 bytes.
   authToken: ""

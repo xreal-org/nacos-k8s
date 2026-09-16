@@ -32,6 +32,44 @@
             }
           }
         },
+        "oidc": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Enable OIDC/OAuth2 authentication (Nacos >= 3.2.0); renders an application.properties override and mounts it into the container"
+            },
+            "issuerUri": {
+              "type": "string"
+            },
+            "clientId": {
+              "type": "string"
+            },
+            "clientSecret": {
+              "type": "object",
+              "properties": {
+                "existingSecret": {
+                  "type": "string"
+                },
+                "key": {
+                  "type": "string"
+                }
+              }
+            },
+            "scope": {
+              "type": "string"
+            },
+            "usernameClaim": {
+              "type": "string"
+            },
+            "rolesClaim": {
+              "type": "string"
+            },
+            "adminRole": {
+              "type": "string"
+            }
+          }
+        },
         "authToken": {
           "type": "string"
         },
