@@ -61,6 +61,12 @@ nacos:
     # authorization endpoint).
     rolesClaim: roles
     adminRole: nacos-admin
+    # Optional audience (API identifier) sent on authorize/token requests.
+    # Requires the patched nacos-oidc-auth-plugin jar to take effect
+    # (Nacos 3.2 does not support audience natively). Set it to the Auth0
+    # API identifier (recommended: equal to clientId so Nacos' strict
+    # audience validation passes) to get a signed JWS access token.
+    audience: ""
   # Deprecated inline credential values. Prefer nacos.auth.existingSecret.
   # authToken must be a Base64-encoded value whose decoded form is at least 32 bytes.
   authToken: ""

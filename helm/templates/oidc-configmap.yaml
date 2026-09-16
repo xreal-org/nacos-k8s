@@ -37,4 +37,10 @@ data:
     nacos.core.auth.plugin.oidc.username-claim={{ .Values.nacos.oidc.usernameClaim | default "preferred_username" }}
     nacos.core.auth.plugin.oidc.roles-claim={{ .Values.nacos.oidc.rolesClaim | default "roles" }}
     nacos.core.auth.plugin.oidc.admin-role={{ .Values.nacos.oidc.adminRole | default "nacos-admin" }}
+    {{- if .Values.nacos.oidc.audience }}
+    # 显式 audience（API identifier）：要求 IdP 签发签名 JWT（JWS）。
+    # 某些 IdP（如 Auth0）在无 audience 时签发加密 JWT（JWE），Nacos 无法校验。
+    # 需要配合 nacos-oidc-auth-plugin audience 补丁（插件 jar 支持读取该配置项）。
+    nacos.core.auth.plugin.oidc.audience={{ .Values.nacos.oidc.audience }}
+    {{- end }}
 {{- end }}

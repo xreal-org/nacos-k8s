@@ -67,6 +67,10 @@
             },
             "adminRole": {
               "type": "string"
+            },
+            "audience": {
+              "type": "string",
+              "description": "Optional audience (API identifier) sent on authorize/token requests; requires the patched nacos-oidc-auth-plugin jar"
             }
           }
         },
