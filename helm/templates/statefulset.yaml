@@ -189,10 +189,17 @@ spec:
                   name: nacos-cm
                   key: mysql.user
             - name: MYSQL_SERVICE_PASSWORD
+              {{- if .Values.nacos.storage.db.existingSecret }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.nacos.storage.db.existingSecret }}
+                  key: {{ default "password" .Values.nacos.storage.db.passwordSecretKey | quote }}
+              {{- else }}
               valueFrom:
                 configMapKeyRef:
                   name: nacos-cm
                   key: mysql.password
+              {{- end }}
             - name: MYSQL_SERVICE_DB_PARAM
               valueFrom:
                 configMapKeyRef:

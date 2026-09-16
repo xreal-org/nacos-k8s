@@ -54,6 +54,11 @@ nacos:
       key: oidc-client-secret
     scope: "openid profile email"
     usernameClaim: preferred_username
+    # User roles are read from the rolesClaim in the IdP ID token.
+    # Only users whose roles include adminRole become Nacos admins;
+    # everyone else is a normal user by default. Grant higher permissions
+    # by assigning roles to users in the IdP (or via an external
+    # authorization endpoint).
     rolesClaim: roles
     adminRole: nacos-admin
   # Deprecated inline credential values. Prefer nacos.auth.existingSecret.
@@ -74,6 +79,10 @@ nacos:
 #      port: 3306
 #      username: usernmae
 #      password: password
+#      # 推荐：MySQL 密码放入 K8s Secret，不写入 values / nacos-cm ConfigMap。
+#      # 设置 existingSecret 后，上面的 password 不再被渲染，密码改从 Secret 注入：
+#      existingSecret: nacos-auth
+#      passwordSecretKey: db-password
 #      param: characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useSSL=false
 #      # For MySQL 8.0+, you may need to add: &allowPublicKeyRetrieval=true
 #      # Full example: characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
