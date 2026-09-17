@@ -10,12 +10,9 @@ data:
   mysql.db.name: {{ .name }}
   mysql.port: "{{ .port | default 3306}}"
   mysql.user: {{ .username }}
-  {{- if kindIs "string" $.Values.nacos.storage.db.password }}
+  {{- if kindIs "string" .password }}
   mysql.password: {{ .password }}
   {{- end }}
   mysql.param: {{ .param | default "characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useSSL=false" }}
   {{- end }}
   {{- end }}
-
-
-
