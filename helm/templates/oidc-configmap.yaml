@@ -43,4 +43,9 @@ data:
     # 需要配合 nacos-oidc-auth-plugin audience 补丁（插件 jar 支持读取该配置项）。
     nacos.core.auth.plugin.oidc.audience={{ .Values.nacos.oidc.audience }}
     {{- end }}
+    {{- if .Values.nacos.oidc.endSessionEndpoint }}
+    # 显式 end-session endpoint（IdP 登出地址）：某些 IdP（如 Auth0）不在 OIDC discovery 文档暴露 end_session_endpoint，
+    # 导致 Nacos logout 不重定向。手动配置后 logout 会重定向到该地址（需配合插件补丁）。
+    nacos.core.auth.plugin.oidc.end-session-endpoint={{ .Values.nacos.oidc.endSessionEndpoint }}
+    {{- end }}
 {{- end }}

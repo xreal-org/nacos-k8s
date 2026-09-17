@@ -71,6 +71,10 @@
             "audience": {
               "type": "string",
               "description": "Optional audience (API identifier) sent on authorize/token requests; requires the patched nacos-oidc-auth-plugin jar"
+            },
+            "endSessionEndpoint": {
+              "type": "string",
+              "description": "Optional end-session endpoint override for IdPs that don't expose end_session_endpoint in discovery (e.g. Auth0); requires the patched nacos-oidc-auth-plugin jar"
             }
           }
         },

@@ -67,6 +67,12 @@ nacos:
     # API identifier (recommended: equal to clientId so Nacos' strict
     # audience validation passes) to get a signed JWS access token.
     audience: ""
+    # Optional end-session endpoint override. Some IdPs (e.g. Auth0) do not
+    # expose end_session_endpoint in their OIDC discovery document, which causes
+    # Nacos logout to return JSON instead of redirecting. Set this to the IdP's
+    # logout URL (e.g. https://auth-dev.xreal.com/v2/logout) to enable redirect.
+    # Requires the patched nacos-oidc-auth-plugin jar.
+    endSessionEndpoint: ""
   # Deprecated inline credential values. Prefer nacos.auth.existingSecret.
   # authToken must be a Base64-encoded value whose decoded form is at least 32 bytes.
   authToken: ""
